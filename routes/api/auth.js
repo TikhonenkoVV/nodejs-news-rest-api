@@ -6,6 +6,8 @@ const schema = require("../../schemas/authSchema");
 
 const router = express.Router();
 
+router.post("/refresh", contrrollWrapper(authCtrl.refreshTokens));
+
 router.post(
     "/signup",
     validateBody(schema.signUpSchema),
@@ -18,13 +20,11 @@ router.post(
     contrrollWrapper(authCtrl.signIn)
 );
 
-// router.get(
-//     "/current",
-//     contrrollWrapper(auth),
-//     contrrollWrapper(authCtrl.getCurrentUser)
-// );
-
-// router.post("/refresh", contrrollWrapper(authCtrl.refreshToken));
+router.get(
+    "/current",
+    contrrollWrapper(auth),
+    contrrollWrapper(authCtrl.getCurrentUser)
+);
 
 router.post(
     "/signout",

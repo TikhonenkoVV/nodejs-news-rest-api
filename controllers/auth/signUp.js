@@ -22,8 +22,6 @@ const signUp = async (req, res) => {
         user: {
             name: result.name,
             email: result.email,
-            avatarURL: result.avatarURL,
-            avatarURLsmall: result.avatarURLsmall,
         },
     });
 };

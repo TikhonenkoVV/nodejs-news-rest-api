@@ -4,7 +4,7 @@ const newsSchema = new Schema(
     {
         title: String,
         abstract: String,
-        setion: String,
+        section: String,
         url: String,
         imgUrl: String,
         published_date: String,

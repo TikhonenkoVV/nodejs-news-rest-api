@@ -18,8 +18,9 @@ const generateAccessToken = (userId) => {
     return jwt.sign(payload, secret, options);
 };
 
-const generateRefreshToken = () => {
+const generateRefreshToken = (sessionId) => {
     const payload = {
+        sessionId,
         id: nanoid(),
         type: tokens.refresh.type,
     };
@@ -34,19 +35,37 @@ const generateRefreshToken = () => {
     };
 };
 
-const replaceDbRefreshToken = async (tokenId, userId) => {
-    await Token.findOneAndDelete(userId);
+const replaceDbRefreshToken = async (
+    tokenId,
+    userId,
+    newSessionId,
+    session
+) => {
+    if (session) {
+        await Token.findOneAndDelete(session);
+        console.log("ses", session);
+    }
 
-    const result = await Token.create({ tokenId, userId });
+    const result = await Token.create({
+        tokenId,
+        userId,
+        sessionId: newSessionId,
+    });
 
     return result;
 };
 
-const updateTokens = async (userId) => {
+const updateTokens = async (userId, session) => {
+    const newSessionId = nanoid();
     const accessToken = authHelper.generateAccessToken(userId);
-    const refreshToken = authHelper.generateRefreshToken();
+    const refreshToken = authHelper.generateRefreshToken(newSessionId);
 
-    await authHelper.replaceDbRefreshToken(refreshToken.id, userId);
+    await authHelper.replaceDbRefreshToken(
+        refreshToken.id,
+        userId,
+        newSessionId,
+        session
+    );
 
     return { accessToken, refreshToken: refreshToken.token };
 };

@@ -8,13 +8,25 @@ const router = express.Router();
 
 router.get("/", controllWrapper(auth), controllWrapper(newsCtrl.getAll));
 
+router.get(
+    "/:newsId",
+    controllWrapper(auth),
+    controllWrapper(newsCtrl.findNewsById)
+);
+
 router.post("/", controllWrapper(auth), controllWrapper(newsCtrl.addNews));
 
 router.patch(
-    "/:newsId/favorite",
+    "/favorite/:newsId",
     controllWrapper(auth),
     validateBody(schema.toggleFavoriteSchema),
     controllWrapper(newsCtrl.toggleFavorite)
+);
+
+router.delete(
+    "/:newsId",
+    controllWrapper(auth),
+    controllWrapper(newsCtrl.deleteNews)
 );
 
 module.exports = router;
