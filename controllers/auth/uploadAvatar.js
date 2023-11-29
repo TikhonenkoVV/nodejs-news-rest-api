@@ -8,23 +8,9 @@ const uploadAvatar = async (req, res) => {
     const { filename } = req.file;
     const { _id } = req.user;
 
-    const split = filename.split(".");
-    const fileExt = split[split.length - 1];
-    const fileNameLarge = `${_id}.${fileExt}`;
-    const fileNameSmall = `${_id}_small.${fileExt}`;
+    const data = await createAvatar(filename, _id);
 
-    await createAvatar(filename, fileNameLarge, fileNameSmall);
-
-    const avatarURL = `avatars/${fileNameLarge}`;
-    const avatarURLsmall = `avatars/${fileNameSmall}`;
-    const user = await User.findByIdAndUpdate(
-        _id,
-        {
-            avatarURL,
-            avatarURLsmall,
-        },
-        { new: true }
-    );
+    const user = await User.findByIdAndUpdate(_id, data, { new: true });
 
     return res.json({
         avatarURL: user.avatarURL,

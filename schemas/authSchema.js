@@ -13,6 +13,7 @@ const signUpSchema = joi.object({
         .regex(passwordRegex.pattern)
         .required()
         .messages({ "string.pattern.base": passwordRegex.message }),
+    theme: joi.string(),
 });
 
 const signInSchema = joi.object({

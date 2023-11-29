@@ -5,7 +5,13 @@ const getCurrentUser = async (req, res) => {
     if (!user) {
         throw RequestError(404, "User not found");
     }
-    res.json({ email: user.email, subscription: user.subscription });
+    res.json({
+        email: user.email,
+        name: user.name,
+        avatar: user.avatarURL,
+        smallAvatar: user.avatarURLsmall,
+        theme: user.theme,
+    });
 };
 
 module.exports = getCurrentUser;

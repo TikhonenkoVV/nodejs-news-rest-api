@@ -3,7 +3,7 @@ const User = require("../../models/user");
 const bcrypt = require("bcrypt");
 
 const signUp = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, theme } = req.body;
     const isUserExist = await User.findOne({ email });
     if (isUserExist) {
         throw RequestError(409, "Email is already in use");
@@ -16,6 +16,7 @@ const signUp = async (req, res) => {
         password: hashedPassword,
         avatarURL: "",
         avatarURLsmall: "",
+        theme,
     });
 
     res.status(201).json({
