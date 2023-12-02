@@ -1,14 +1,14 @@
 const User = require("../../models/user");
-const { RequestError, createAvatar } = require("../../helpers");
+const { createAvatar, RequestError } = require("../../helpers");
 
 const uploadAvatar = async (req, res) => {
-    if (!req.file) {
-        throw RequestError(400, "File is requred");
-    }
-    const { filename } = req.file;
+    const { avatar } = req.body;
     const { _id } = req.user;
+    if (!avatar) {
+        throw RequestError(409, "Avatar is required");
+    }
 
-    const data = await createAvatar(filename, _id);
+    const data = await createAvatar(avatar, _id);
 
     const user = await User.findByIdAndUpdate(_id, data, { new: true });
 

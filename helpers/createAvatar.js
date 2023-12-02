@@ -1,5 +1,3 @@
-const path = require("path");
-const fs = require("fs/promises");
 const cloudinary = require("cloudinary").v2;
 
 const { CLOUDINARY_NAME, CLOUDINARY_API_KEY, CLOUDINARY_SECRET_KEY } =
@@ -12,25 +10,22 @@ cloudinary.config({
 });
 
 const createAvatar = async (file, _id) => {
-    const tmpFile = path.resolve(__dirname, "../tmp", file);
     const data = { avatarURL: "", avatarURLsmall: "" };
     try {
         await cloudinary.uploader
-            .upload(tmpFile, {
-                public_id: `bitenews/${_id}`,
+            .upload(file, {
+                public_id: `bitenews/avatars/${_id}`,
                 transformation: { width: 250, crop: "pad" },
             })
             .then((res) => (data.avatarURL = res.url));
         await cloudinary.uploader
-            .upload(tmpFile, {
-                public_id: `bitenews/${_id}_small`,
+            .upload(file, {
+                public_id: `bitenews/avatars/${_id}_small`,
                 transformation: { width: 64, crop: "pad" },
             })
             .then((res) => (data.avatarURLsmall = res.url));
-        await fs.unlink(tmpFile);
         return data;
     } catch (error) {
-        await fs.unlink(tmpFile);
         throw error;
     }
 };
