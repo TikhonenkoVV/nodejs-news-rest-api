@@ -21,7 +21,12 @@ const signInSchema = joi.object({
     password: joi.string().required(),
 });
 
+const updThemeSchema = joi.object({
+    theme: joi.string().required(),
+});
+
 module.exports = {
     signUpSchema,
     signInSchema,
+    updThemeSchema,
 };

@@ -39,4 +39,11 @@ router.patch(
     contrrollWrapper(authCtrl.uploadAvatar)
 );
 
+router.patch(
+    "/theme",
+    contrrollWrapper(auth),
+    validateBody(schema.updThemeSchema),
+    contrrollWrapper(authCtrl.updateTheme)
+);
+
 module.exports = router;
