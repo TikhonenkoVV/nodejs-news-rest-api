@@ -17,13 +17,13 @@ const createAvatar = async (file, _id) => {
                 public_id: `bitenews/avatars/${_id}`,
                 transformation: { width: 250, crop: "pad" },
             })
-            .then((res) => (data.avatarURL = res.url));
+            .then((res) => (data.avatarURL = res.secure_url));
         await cloudinary.uploader
             .upload(file, {
                 public_id: `bitenews/avatars/${_id}_small`,
                 transformation: { width: 64, crop: "pad" },
             })
-            .then((res) => (data.avatarURLsmall = res.url));
+            .then((res) => (data.avatarURLsmall = res.secure_url));
         return data;
     } catch (error) {
         throw error;
